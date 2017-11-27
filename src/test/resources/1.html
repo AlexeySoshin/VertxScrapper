@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Vert.x Web Client - Vert.x</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Eclipse Vert.x is a tool-kit for building reactive applications on the JVM." name="description">
+    <link href="http://vertx.io/stylesheets/docs.css" media="screen" rel="stylesheet">
+    <link href="http://vertx.io/stylesheets/font-awesome.min.css" media="screen" rel="stylesheet">
+    <link href="http://vertx.io/javascripts/styles/rainbow.min.css" media="screen" rel="stylesheet">
+    <!-- IE 6-8 support of HTML 5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://static.jboss.org/theme/js/libs/html5/pre3.6/html5.min.js"></script>
+    <![endif]-->
+
+    <link rel="apple-touch-icon" sizes="57x57" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="http://vertx.io/assets/favicons/vertx-favicon-7/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="http://vertx.io/assets/favicons/vertx-favicon-7/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="http://vertx.io/assets/favicons/vertx-favicon-7/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="http://vertx.io/assets/favicons/vertx-favicon-7/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="http://vertx.io/assets/favicons/vertx-favicon-7/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="http://vertx.io/assets/favicons/vertx-favicon-7/manifest.json">
+    <link rel="mask-icon" href="http://vertx.io/assets/favicons/vertx-favicon-7/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#7d3194">
+    <meta name="msapplication-TileImage" content="http://vertx.io/assets/favicons/vertx-favicon-7/mstile-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <link href="http://fonts.googleapis.com/css?family=Ubuntu:400,500,700,400italic" rel="stylesheet" type="text/css">
+    <link rel="alternate" type="application/rss+xml" title="RSS"
+          href="http://vertx.io/feed.xml">
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-30144458-1', 'auto');
+      ga('create', 'UA-71153120-1', 'auto', 'tracker');
+      ga('send', 'pageview');
+      ga('tracker.send', 'pageview');
+    </script>
+</head>
+<body>
+
+<a href="http://www.reactivemanifesto.org/" id="reactive-manifesto-banner">
+    <img style="border: 0; position: fixed; right: 0; top:0; z-index: 9000"
+         src="http://d379ifj7s9wntv.cloudfront.net/reactivemanifesto/images/ribbons/we-are-reactive-black-right.png">
+</a>
+
+<a id="skippy" class="sr-only sr-only-focusable" href="#content"><div class="container"><span class="skiplink-text">Skip to main content</span></div></a>
+
+<header class="navbar navbar-default navbar-static-top" id="top" role="banner">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#vertx-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://vertx.io/" class="navbar-brand"><img alt="Brand" src="http://vertx.io/assets/logo-sm.png"></a>
+        </div>
+        <nav class="collapse navbar-collapse" id="vertx-navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://start.vertx.io">Starter</a></li>
+                <li><a href="http://vertx.io/download/">Download</a></li>
+                <li><a href="http://vertx.io/docs/">Documentation</a></li>
+                <li><a href="https://github.com/vert-x3/wiki/wiki">Wiki</a></li>
+                <li><a href="http://vertx.io/community/">Community</a></li>
+                <li><a href="http://vertx.io/materials/">Materials</a></li>
+                <li><a href="http://vertx.io/blog/">Blog</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+
+<div class="page-header" id="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Vert.x Web Client</h1>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="content">
+    <div class="container docs-content">
+        <div class="row">
+            <div class="col-sm-12 col-md-push-9 col-md-3 hidden-xs hidden-sm">
+                <div id="sidebar" data-spy="affix">
+                    <ul class="sectlevel1">
+                        <li><a href="#_using_the_web_client">Using the web client</a></li>
+                        <li><a href="#_re_cap_on_vert_x_core_http_client">Re-cap on Vert.x core HTTP client</a></li>
+                        <li><a href="#_creating_a_web_client">Creating a web client</a></li>
+                        <li><a href="#_making_requests">Making requests</a>
+                            <ul class="sectlevel2">
+                                <li><a href="#_simple_requests_with_no_body">Simple requests with no body</a></li>
+                                <li><a href="#_writing_request_bodies">Writing request bodies</a></li>
+                                <li><a href="#_writing_request_headers">Writing request headers</a></li>
+                                <li><a href="#_reusing_requests">Reusing requests</a></li>
+                                <li><a href="#_timeouts">Timeouts</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#_handling_http_responses">Handling http responses</a>
+                            <ul class="sectlevel2">
+                                <li><a href="#_decoding_responses">Decoding responses</a></li>
+                                <li><a href="#_handling_30x_redirections">Handling 30x redirections</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#_using_https">Using HTTPS</a></li>
+                        <li><a href="#_rxjava_api">RxJava API</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-pull-3 col-md-9">
+                <div class="toc hidden-md hidden-lg">
+                    <h2>Table of Contents</h2>
+                    <ul class="sectlevel1">
+                        <li><a href="#_using_the_web_client">Using the web client</a></li>
+                        <li><a href="#_re_cap_on_vert_x_core_http_client">Re-cap on Vert.x core HTTP client</a></li>
+                        <li><a href="#_creating_a_web_client">Creating a web client</a></li>
+                        <li><a href="#_making_requests">Making requests</a>
+                            <ul class="sectlevel2">
+                                <li><a href="#_simple_requests_with_no_body">Simple requests with no body</a></li>
+                                <li><a href="#_writing_request_bodies">Writing request bodies</a></li>
+                                <li><a href="#_writing_request_headers">Writing request headers</a></li>
+                                <li><a href="#_reusing_requests">Reusing requests</a></li>
+                                <li><a href="#_timeouts">Timeouts</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#_handling_http_responses">Handling http responses</a>
+                            <ul class="sectlevel2">
+                                <li><a href="#_decoding_responses">Decoding responses</a></li>
+                                <li><a href="#_handling_30x_redirections">Handling 30x redirections</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#_using_https">Using HTTPS</a></li>
+                        <li><a href="#_rxjava_api">RxJava API</a></li>
+                    </ul>
+                </div>
+                <div id="preamble">
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>Vert.x Web Client is an asynchronous HTTP and HTTP/2 client.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>The Web Client makes easy to do HTTP request/response interactions with a web server, and provides advanced
+                                features like:</p>
+                        </div>
+                        <div class="ulist">
+                            <ul>
+                                <li>
+                                    <p>Json body encoding / decoding</p>
+                                </li>
+                                <li>
+                                    <p>request/response pumping</p>
+                                </li>
+                                <li>
+                                    <p>request parameters</p>
+                                </li>
+                                <li>
+                                    <p>unified error handling</p>
+                                </li>
+                                <li>
+                                    <p>form submissions</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="paragraph">
+                            <p>The web client does not deprecate the Vert.x Core <code><a href="../../apidocs/io/vertx/core/http/HttpClient.html">HttpClient</a></code>, indeed it is based on
+                                this client and inherits its configuration and great features like pooling, HTTP/2 support, pipelining support, etc&#8230;&#8203;
+                                The <code><a href="../../apidocs/io/vertx/core/http/HttpClient.html">HttpClient</a></code> should be used when fine grained control over the HTTP
+                                requests/responses is necessary.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>The web client does not provide a WebSocket API, the Vert.x Core <code><a href="../../apidocs/io/vertx/core/http/HttpClient.html">HttpClient</a></code> should
+                                be used.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_using_the_web_client">Using the web client</h2>
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>To use Vert.x Web Client, add the following dependency to the <em>dependencies</em> section of your build descriptor:</p>
+                        </div>
+                        <div class="ulist">
+                            <ul>
+                                <li>
+                                    <p>Maven (in your <code>pom.xml</code>):</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+  <span class="tag">&lt;groupId&gt;</span>io.vertx<span class="tag">&lt;/groupId&gt;</span>
+  <span class="tag">&lt;artifactId&gt;</span>vertx-web-client<span class="tag">&lt;/artifactId&gt;</span>
+  <span class="tag">&lt;version&gt;</span>3.5.0<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+                            </div>
+                        </div>
+                        <div class="ulist">
+                            <ul>
+                                <li>
+                                    <p>Gradle (in your <code>build.gradle</code> file):</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
+  compile <span class="string"><span class="delimiter">'</span><span class="content">io.vertx:vertx-web-client:3.5.0</span><span class="delimiter">'</span></span>
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_re_cap_on_vert_x_core_http_client">Re-cap on Vert.x core HTTP client</h2>
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>Vert.x Web Client uses the API from Vert.x core, so it&#8217;s well worth getting familiar with the basic concepts of using
+                                <code><a href="../../apidocs/io/vertx/core/http/HttpClient.html">HttpClient</a></code> using Vert.x core, if you&#8217;re not already.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_creating_a_web_client">Creating a web client</h2>
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>You create an <code><a href="../../apidocs/io/vertx/ext/web/client/WebClient.html">WebClient</a></code> instance with default options as follows</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+                                <pre class="CodeRay highlight"><code data-lang="java">WebClient client = WebClient.create(vertx);</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>If you want to configure options for the client, you create it as follows</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">WebClientOptions options = <span class="keyword">new</span> WebClientOptions()
+  .setUserAgent(<span class="string"><span class="delimiter">&quot;</span><span class="content">My-App/1.2.3</span><span class="delimiter">&quot;</span></span>);
+options.setKeepAlive(<span class="predefined-constant">false</span>);
+WebClient client = WebClient.create(vertx, options);</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>Web Client options inherit Http Client options so you can set any one of them.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>If your already have an HTTP Client in your application you can also reuse it</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+                                <pre class="CodeRay highlight"><code data-lang="java">WebClient client = WebClient.wrap(httpClient);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_making_requests">Making requests</h2>
+                    <div class="sectionbody">
+                        <div class="sect2">
+                            <h3 id="_simple_requests_with_no_body">Simple requests with no body</h3>
+                            <div class="paragraph">
+                                <p>Often, you’ll want to make HTTP requests with no request body. This is usually the case with HTTP GET, OPTIONS
+                                    and HEAD requests</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">WebClient client = WebClient.create(vertx);
+
+<span class="comment">// Send a GET request</span>
+client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Obtain response</span>
+      HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });
+
+<span class="comment">// Send a HEAD request</span>
+client
+  .head(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Obtain response</span>
+      HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>You can add query parameters to the request URI in a fluent fashion</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .addQueryParam(<span class="string"><span class="delimiter">&quot;</span><span class="content">param</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">param_value</span><span class="delimiter">&quot;</span></span>)
+  .send(ar -&gt; {});</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>Any request URI parameter will pre-populate the request</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpRequest&lt;<span class="predefined-type">Buffer</span>&gt; request = client.get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri?param1=param1_value&amp;param2=param2_value</span><span class="delimiter">&quot;</span></span>);
+
+<span class="comment">// Add param3</span>
+request.addQueryParam(<span class="string"><span class="delimiter">&quot;</span><span class="content">param3</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">param3_value</span><span class="delimiter">&quot;</span></span>);
+
+<span class="comment">// Overwrite param2</span>
+request.setQueryParam(<span class="string"><span class="delimiter">&quot;</span><span class="content">param2</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">another_param2_value</span><span class="delimiter">&quot;</span></span>);</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>Setting a request URI discards existing query parameters</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpRequest&lt;<span class="predefined-type">Buffer</span>&gt; request = client.get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>);
+
+<span class="comment">// Add param1</span>
+request.addQueryParam(<span class="string"><span class="delimiter">&quot;</span><span class="content">param1</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">param1_value</span><span class="delimiter">&quot;</span></span>);
+
+<span class="comment">// Overwrite param1 and add param2</span>
+request.uri(<span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri?param1=param1_value&amp;param2=param2_value</span><span class="delimiter">&quot;</span></span>);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sect2">
+                            <h3 id="_writing_request_bodies">Writing request bodies</h3>
+                            <div class="paragraph">
+                                <p>When you need to make a request with a body, you use the same API and call then <code>sendXXX</code> methods
+                                    that expects a body to send.</p>
+                            </div>
+                            <div class="paragraph">
+                                <p>Use <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#sendBuffer-io.vertx.core.buffer.Buffer-io.vertx.core.Handler-">sendBuffer</a></code> to send a buffer body</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .sendBuffer(buffer, ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Ok</span>
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>Sending a single buffer is useful but often you don&#8217;t want to load fully the content in memory because
+                                    it may be too large or you want to handle many concurrent requests and want to use just the minimum
+                                    for each request. For this purpose the web client can send <code>ReadStream&lt;Buffer&gt;</code> (e.g a
+                                    <code><a href="../../apidocs/io/vertx/core/file/AsyncFile.html">AsyncFile</a></code> is a ReadStream&lt;Buffer&gt;`) with the <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#sendStream-io.vertx.core.streams.ReadStream-io.vertx.core.Handler-">sendStream</a></code> method</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .sendStream(stream, resp -&gt; {});</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>The web client takes care of setting up the transfer pump for you. Since the length of the stream is not know
+                                    the request will use chunked transfer encoding .</p>
+                            </div>
+                            <div class="paragraph">
+                                <p>When you know the size of the stream, you shall specify before using the <code>content-length</code> header</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">fs.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">content.txt</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> OpenOptions(), fileRes -&gt; {
+  <span class="keyword">if</span> (fileRes.succeeded()) {
+    ReadStream&lt;<span class="predefined-type">Buffer</span>&gt; fileStream = fileRes.result();
+
+    <span class="predefined-type">String</span> fileLen = <span class="string"><span class="delimiter">&quot;</span><span class="content">1024</span><span class="delimiter">&quot;</span></span>;
+
+    <span class="comment">// Send the file to the server using POST</span>
+    client
+      .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+      .putHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">content-length</span><span class="delimiter">&quot;</span></span>, fileLen)
+      .sendStream(fileStream, ar -&gt; {
+        <span class="keyword">if</span> (ar.succeeded()) {
+          <span class="comment">// Ok</span>
+        }
+      });
+  }
+});</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>The POST will not be chunked.</p>
+                            </div>
+                            <div class="sect3">
+                                <h4 id="_json_bodies">Json bodies</h4>
+                                <div class="paragraph">
+                                    <p>Often you’ll want to send Json body requests, to send a <code><a href="../../apidocs/io/vertx/core/json/JsonObject.html">JsonObject</a></code>
+                                        use the <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#sendJsonObject-io.vertx.core.json.JsonObject-io.vertx.core.Handler-">sendJsonObject</a></code></p>
+                                </div>
+                                <div class="listingblock">
+                                    <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .sendJsonObject(<span class="keyword">new</span> JsonObject()
+    .put(<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Dale</span><span class="delimiter">&quot;</span></span>)
+    .put(<span class="string"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Cooper</span><span class="delimiter">&quot;</span></span>), ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Ok</span>
+    }
+  });</code></pre>
+                                    </div>
+                                </div>
+                                <div class="paragraph">
+                                    <p>In Java, Groovy or Kotlin, you can use the <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#sendJson-java.lang.Object-io.vertx.core.Handler-">sendJson</a></code> method that maps
+                                        a POJO (Plain Old Java Object) to a Json object using <code><a href="../../apidocs/io/vertx/core/json/Json.html#encode-java.lang.Object-">Json.encode</a></code>
+                                        method</p>
+                                </div>
+                                <div class="listingblock">
+                                    <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .sendJson(<span class="keyword">new</span> User(<span class="string"><span class="delimiter">&quot;</span><span class="content">Dale</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Cooper</span><span class="delimiter">&quot;</span></span>), ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Ok</span>
+    }
+  });</code></pre>
+                                    </div>
+                                </div>
+                                <div class="admonitionblock note">
+                                    <table>
+                                        <tr>
+                                            <td class="icon">
+                                                <div class="title">Note</div>
+                                            </td>
+                                            <td class="content">
+                                                the <code><a href="../../apidocs/io/vertx/core/json/Json.html#encode-java.lang.Object-">Json.encode</a></code> uses the Jackson mapper to encode the object
+                                                to Json.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="sect3">
+                                <h4 id="_form_submissions">Form submissions</h4>
+                                <div class="paragraph">
+                                    <p>You can send http form submissions bodies with the <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#sendForm-io.vertx.core.MultiMap-io.vertx.core.Handler-">sendForm</a></code>
+                                        variant.</p>
+                                </div>
+                                <div class="listingblock">
+                                    <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">MultiMap form = MultiMap.caseInsensitiveMultiMap();
+form.set(<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Dale</span><span class="delimiter">&quot;</span></span>);
+form.set(<span class="string"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Cooper</span><span class="delimiter">&quot;</span></span>);
+
+<span class="comment">// Submit the form as a form URL encoded body</span>
+client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .sendForm(form, ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Ok</span>
+    }
+  });</code></pre>
+                                    </div>
+                                </div>
+                                <div class="paragraph">
+                                    <p>By default the form is submitted with the <code>application/x-www-form-urlencoded</code> content type header. You can set
+                                        the <code>content-type</code> header to <code>multipart/form-data</code> instead</p>
+                                </div>
+                                <div class="listingblock">
+                                    <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">MultiMap form = MultiMap.caseInsensitiveMultiMap();
+form.set(<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Dale</span><span class="delimiter">&quot;</span></span>);
+form.set(<span class="string"><span class="delimiter">&quot;</span><span class="content">lastName</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Cooper</span><span class="delimiter">&quot;</span></span>);
+
+<span class="comment">// Submit the form as a multipart form body</span>
+client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .putHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">content-type</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">multipart/form-data</span><span class="delimiter">&quot;</span></span>)
+  .sendForm(form, ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Ok</span>
+    }
+  });</code></pre>
+                                    </div>
+                                </div>
+                                <div class="admonitionblock note">
+                                    <table>
+                                        <tr>
+                                            <td class="icon">
+                                                <div class="title">Note</div>
+                                            </td>
+                                            <td class="content">
+                                                at the moment multipart files are not supported, it will likely be supported in a later revision
+                                                of the API.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sect2">
+                            <h3 id="_writing_request_headers">Writing request headers</h3>
+                            <div class="paragraph">
+                                <p>You can write headers to a request using the headers multi-map as follows:</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpRequest&lt;<span class="predefined-type">Buffer</span>&gt; request = client.get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>);
+MultiMap headers = request.headers();
+headers.set(<span class="string"><span class="delimiter">&quot;</span><span class="content">content-type</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>);
+headers.set(<span class="string"><span class="delimiter">&quot;</span><span class="content">other-header</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">foo</span><span class="delimiter">&quot;</span></span>);</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>The headers are an instance of <code><a href="../../apidocs/io/vertx/core/MultiMap.html">MultiMap</a></code> which provides operations for adding,
+                                    setting and removing entries. Http headers allow more than one value for a specific key.</p>
+                            </div>
+                            <div class="paragraph">
+                                <p>You can also write headers using putHeader</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpRequest&lt;<span class="predefined-type">Buffer</span>&gt; request = client.get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>);
+request.putHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">content-type</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">application/json</span><span class="delimiter">&quot;</span></span>);
+request.putHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">other-header</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">foo</span><span class="delimiter">&quot;</span></span>);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sect2">
+                            <h3 id="_reusing_requests">Reusing requests</h3>
+                            <div class="paragraph">
+                                <p>The <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#send-io.vertx.core.Handler-">send</a></code> method can be called multiple times
+                                    safely, making it very easy to configure and reuse <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html">HttpRequest</a></code> objects</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpRequest&lt;<span class="predefined-type">Buffer</span>&gt; get = client.get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>);
+get.send(ar -&gt; {
+  <span class="keyword">if</span> (ar.succeeded()) {
+    <span class="comment">// Ok</span>
+  }
+});
+
+<span class="comment">// Same request again</span>
+get.send(ar -&gt; {
+  <span class="keyword">if</span> (ar.succeeded()) {
+    <span class="comment">// Ok</span>
+  }
+});</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>Beware though that <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html">HttpRequest</a></code> instances are mutable.
+                                    Therefore you should call the <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#copy--">copy</a></code> method before modifying a cached instance.</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">HttpRequest&lt;<span class="predefined-type">Buffer</span>&gt; get = client.get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>);
+get.send(ar -&gt; {
+  <span class="keyword">if</span> (ar.succeeded()) {
+    <span class="comment">// Ok</span>
+  }
+});
+
+<span class="comment">// The &quot;get&quot; request instance remains unmodified</span>
+get.copy().putHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">a-header</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">with-some-value</span><span class="delimiter">&quot;</span></span>).send(ar -&gt; {
+  <span class="keyword">if</span> (ar.succeeded()) {
+    <span class="comment">// Ok</span>
+  }
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sect2">
+                            <h3 id="_timeouts">Timeouts</h3>
+                            <div class="paragraph">
+                                <p>You can set a timeout for a specific http request using <code><a href="../../apidocs/io/vertx/ext/web/client/HttpRequest.html#timeout-long-">timeout</a></code>.</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .timeout(<span class="integer">5000</span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Ok</span>
+    } <span class="keyword">else</span> {
+      <span class="comment">// Might be a timeout when cause is java.util.concurrent.TimeoutException</span>
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>If the request does not return any data within the timeout period an exception will be passed to the response
+                                    handler.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_handling_http_responses">Handling http responses</h2>
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>When the web client sends a request you always deal with a single async result <code><a href="../../apidocs/io/vertx/ext/web/client/HttpResponse.html">HttpResponse</a></code>.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>On a success result the callback happens after the response has been received</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+
+      HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                            </div>
+                        </div>
+                        <div class="admonitionblock warning">
+                            <table>
+                                <tr>
+                                    <td class="icon">
+                                        <div class="title">Warning</div>
+                                    </td>
+                                    <td class="content">
+                                        responses are fully buffered, use <code><a href="../../apidocs/io/vertx/ext/web/codec/BodyCodec.html#pipe-io.vertx.core.streams.WriteStream-">BodyCodec.pipe</a></code>
+                                        to pipe the response to a write stream
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="sect2">
+                            <h3 id="_decoding_responses">Decoding responses</h3>
+                            <div class="paragraph">
+                                <p>By default the web client provides an http response body as a <code>Buffer</code> and does not apply
+                                    any decoding.</p>
+                            </div>
+                            <div class="paragraph">
+                                <p>Custom response body decoding can be achieved using <code><a href="../../apidocs/io/vertx/ext/web/codec/BodyCodec.html">BodyCodec</a></code>:</p>
+                            </div>
+                            <div class="ulist">
+                                <ul>
+                                    <li>
+                                        <p>Plain String</p>
+                                    </li>
+                                    <li>
+                                        <p>Json object</p>
+                                    </li>
+                                    <li>
+                                        <p>Json mapped POJO</p>
+                                    </li>
+                                    <li>
+                                        <p><code><a href="../../apidocs/io/vertx/core/streams/WriteStream.html">WriteStream</a></code></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="paragraph">
+                                <p>A body codecs can decode an arbitrary binary data stream into a specific object instance, saving you the decoding
+                                    step in your response handlers.</p>
+                            </div>
+                            <div class="paragraph">
+                                <p>Use <code><a href="../../apidocs/io/vertx/ext/web/codec/BodyCodec.html#jsonObject--">BodyCodec.jsonObject</a></code> To decode a Json object:</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .as(BodyCodec.jsonObject())
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      HttpResponse&lt;JsonObject&gt; response = ar.result();
+
+      JsonObject body = response.body();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode() + <span class="string"><span class="delimiter">&quot;</span><span class="content"> with body </span><span class="delimiter">&quot;</span></span> + body);
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>In Java, Groovy or Kotlin, custom Json mapped POJO can be decoded</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .as(BodyCodec.json(User.class))
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      HttpResponse&lt;User&gt; response = ar.result();
+
+      User user = response.body();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode() + <span class="string"><span class="delimiter">&quot;</span><span class="content"> with body </span><span class="delimiter">&quot;</span></span> +
+        user.getFirstName() + <span class="string"><span class="delimiter">&quot;</span><span class="content"> </span><span class="delimiter">&quot;</span></span> + user.getLastName());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>When large response are expected, use the <code><a href="../../apidocs/io/vertx/ext/web/codec/BodyCodec.html#pipe-io.vertx.core.streams.WriteStream-">BodyCodec.pipe</a></code>.
+                                    This body codecs pumps the response body buffers to a <code><a href="../../apidocs/io/vertx/core/streams/WriteStream.html">WriteStream</a></code>
+                                    and signals the success or the failure of the operation in the async result response</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .as(BodyCodec.pipe(writeStream))
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+
+      HttpResponse&lt;<span class="predefined-type">Void</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>Finally if you are not interested at all by the response content, the <code><a href="../../apidocs/io/vertx/ext/web/codec/BodyCodec.html#none--">BodyCodec.none</a></code>
+                                    simply discards the entire response body</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .as(BodyCodec.none())
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+
+      HttpResponse&lt;<span class="predefined-type">Void</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>When you don&#8217;t know in advance the content type of the http response, you can still use the <code>bodyAsXXX()</code> methods
+                                    that decode the response to a specific type</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+
+      HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt; response = ar.result();
+
+      <span class="comment">// Decode the body as a json object</span>
+      JsonObject body = response.bodyAsJsonObject();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode() + <span class="string"><span class="delimiter">&quot;</span><span class="content"> with body </span><span class="delimiter">&quot;</span></span> + body);
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                                </div>
+                            </div>
+                            <div class="admonitionblock warning">
+                                <table>
+                                    <tr>
+                                        <td class="icon">
+                                            <div class="title">Warning</div>
+                                        </td>
+                                        <td class="content">
+                                            this is only valid for the response decoded as a buffer.
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="sect2">
+                            <h3 id="_handling_30x_redirections">Handling 30x redirections</h3>
+                            <div class="paragraph">
+                                <p>By default the client follows redirections, you can configure the default behavior in the <code><a href="../../apidocs/io/vertx/ext/web/client/WebClientOptions.html">WebClientOptions</a></code>:</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+                                    <pre class="CodeRay highlight"><code data-lang="java">WebClient client = WebClient.create(vertx, <span class="keyword">new</span> WebClientOptions().setFollowRedirects(<span class="predefined-constant">false</span>));</code></pre>
+                                </div>
+                            </div>
+                            <div class="paragraph">
+                                <p>The client will follow at most <code>16</code> requests redirections, it can be changed in the same options:</p>
+                            </div>
+                            <div class="listingblock">
+                                <div class="content">
+                                    <pre class="CodeRay highlight"><code data-lang="java">WebClient client = WebClient.create(vertx, <span class="keyword">new</span> WebClientOptions().setMaxRedirects(<span class="integer">5</span>));</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_using_https">Using HTTPS</h2>
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>Vert.x web client can be configured to use HTTPS in exactly the same way as the Vert.x <code><a href="../../apidocs/io/vertx/core/http/HttpClient.html">HttpClient</a></code>.</p>
+                        </div>
+                        <div class="paragraph">
+                            <p>You can specify the behavior per request</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .get(<span class="integer">443</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .ssl(<span class="predefined-constant">true</span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Obtain response</span>
+      HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>Or using create methods with absolute URI argument</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">client
+  .getAbs(<span class="string"><span class="delimiter">&quot;</span><span class="content">https://myserver.mycompany.com:4043/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .send(ar -&gt; {
+    <span class="keyword">if</span> (ar.succeeded()) {
+      <span class="comment">// Obtain response</span>
+      HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt; response = ar.result();
+
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode());
+    } <span class="keyword">else</span> {
+      <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + ar.cause().getMessage());
+    }
+  });</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sect1">
+                    <h2 id="_rxjava_api">RxJava API</h2>
+                    <div class="sectionbody">
+                        <div class="paragraph">
+                            <p>The RxJava <code><a href="../../apidocs/io/vertx/rxjava/ext/web/client/HttpRequest.html">HttpRequest</a></code> provides an rx-ified version of the original API,
+                                the <code><a href="../../apidocs/io/vertx/rxjava/ext/web/client/HttpRequest.html#rxSend--">rxSend</a></code> method returns a <code>Single&lt;HttpResponse&lt;Buffer&gt;&gt;</code> that
+                                makes the HTTP request upon subscription, as consequence, the <code>Single</code> can be subscribed many times.</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Single&lt;HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt;&gt; single = client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .rxSend();
+
+<span class="comment">// Send a request upon subscription of the Single</span>
+single.subscribe(response -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received 1st response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode()), error -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + error.getMessage()));
+
+<span class="comment">// Send another request</span>
+single.subscribe(response -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received 2nd response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode()), error -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + error.getMessage()));</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>The obtained <code>Single</code> can be composed and chained naturally with the RxJava API</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Single&lt;<span class="predefined-type">String</span>&gt; url = client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .rxSend()
+  .map(HttpResponse::bodyAsString);
+
+<span class="comment">// Use the flatMap operator to make a request on the URL Single</span>
+url
+  .flatMap(u -&gt; client.getAbs(u).rxSend())
+  .subscribe(response -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Received response with status code</span><span class="delimiter">&quot;</span></span> + response.statusCode()), error -&gt; <span class="predefined-type">System</span>.out.println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Something went wrong </span><span class="delimiter">&quot;</span></span> + error.getMessage()));</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>The same APIs is available</p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Single&lt;HttpResponse&lt;JsonObject&gt;&gt; single = client
+  .get(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .putHeader(<span class="string"><span class="delimiter">&quot;</span><span class="content">some-header</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">header-value</span><span class="delimiter">&quot;</span></span>)
+  .addQueryParam(<span class="string"><span class="delimiter">&quot;</span><span class="content">some-param</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">param value</span><span class="delimiter">&quot;</span></span>)
+  .as(BodyCodec.jsonObject())
+  .rxSend();
+single.subscribe(resp -&gt; {
+  <span class="predefined-type">System</span>.out.println(resp.statusCode());
+  <span class="predefined-type">System</span>.out.println(resp.body());
+});</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>The <code><a href="../../apidocs/io/vertx/rxjava/ext/web/client/HttpRequest.html#sendStream-rx.Observable-io.vertx.core.Handler-">sendStream</a></code> shall
+                                be preferred for sending bodies <code>Observable&lt;Buffer&gt;</code></p>
+                        </div>
+                        <div class="listingblock">
+                            <div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="predefined-type">Observable</span>&lt;<span class="predefined-type">Buffer</span>&gt; body = getPayload();
+
+Single&lt;HttpResponse&lt;<span class="predefined-type">Buffer</span>&gt;&gt; single = client
+  .post(<span class="integer">8080</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">myserver.mycompany.com</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/some-uri</span><span class="delimiter">&quot;</span></span>)
+  .rxSendStream(body);
+single.subscribe(resp -&gt; {
+  <span class="predefined-type">System</span>.out.println(resp.statusCode());
+  <span class="predefined-type">System</span>.out.println(resp.body());
+});</code></pre>
+                            </div>
+                        </div>
+                        <div class="paragraph">
+                            <p>Upon subscription, the <code>body</code> will be subscribed and its content used for the request.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div id="footer">
+                    <div id="footer-text">
+
+                        Last updated 2017-10-17 15:45:48 CEST
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                <h2>Eclipse Vert.x</h2>
+                <ul class="list-unstyled">
+                    <li><a href="http://vertx.io/">Home</a></li>
+                    <li><a href="http://vertx.io/download/">Download</a></li>
+                    <li><a href="http://vertx.io/docs/">Documentation</a></li>
+                    <li><a href="https://github.com/vert-x3/wiki/wiki">Wiki</a></li>
+                    <li><a href="http://vertx.io/blog/">Blog</a></li>
+                    <li><a href="http://vertx.io/vertx2/" class="vertx-2-link">Vert.x 2</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                <h2>Community</h2>
+                <ul class="list-unstyled">
+                    <li><a href="http://vertx.io/community/">Help &amp; Contributors</a></li>
+                    <li><a href="http://vertx.io/materials/">Learning materials</a></li>
+                    <li><a href="https://groups.google.com/forum/?fromgroups#!forum/vertx">User Group</a></li>
+                    <li><a href="https://groups.google.com/forum/?fromgroups#!forum/vertx-dev">Developer Group</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                <h2>Eclipse</h2>
+                <ul class="list-unstyled">
+                    <li><a href="http://www.eclipse.org/">Eclipse Foundation</a></li>
+                    <li><a href="https://eclipse.org/legal/privacy.php">Privacy Policy</a></li>
+                    <li><a href="https://eclipse.org/legal/termsofuse.php">Terms of Use</a></li>
+                    <li><a href="https://eclipse.org/legal/copyright.php">Copyright Agent</a></li>
+                    <li><a href="http://www.eclipse.org/legal">Legal Resources</a></li>
+                </ul>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 copyright">
+                <p>Eclipse Vert.x is open source and dual licensed under the <a href="https://www.eclipse.org/org/documents/epl-v10.php">Eclipse Public License 1.0</a> and <a href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>.</p>
+                <p>This website is licensed under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0 License</a>.<br>
+                    Design by <a href="https://www.michel-kraemer.com">Michel Kr&auml;mer</a>.</p>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5 col-md-offset-1 col-lg-offset-2">
+                        <a href="http://eclipse.org">
+                            <img class="logo eclipse-logo" src="http://vertx.io/assets/eclipse_logo_grey_small.png" width="204" height="48">
+                        </a>
+                    </div>
+                    <div class="col-sm-12 col-md-5 col-md-offset-1 col-lg-offset-0">
+                        <a href="http://cloudbees.com">
+                            <img class="logo cloudbees-logo" src="http://vertx.io/assets/Button-Built-on-CB-1-grey.png" width="180" height="48">
+                        </a>
+                    </div>
+                    <div class="col-sm-12 col-md-5 col-md-offset-7 jprofiler">
+                        <a href="http://www.ej-technologies.com/products/jprofiler/overview.html"
+                           style="text-decoration:none">
+                            <img class="logo jprofiler-logo" src="http://vertx.io/assets/jprofiler-logo.png" width="48" height="48"><span class="jprofiler-logo">&nbsp; JPROFILER</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="http://static.jboss.org/theme/js/libs/jquery/jquery-1.9.1.min.js"></script>
+<script src="http://vertx.io/javascripts/bootstrap.min.js"></script>
+<script src="http://vertx.io/javascripts/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+<script src="http://vertx.io/javascripts/sidebar.js"></script>
+
+
+</body>
+</html>
