@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VertX Scrapper</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js" integrity="sha256-KWJavOowudybFMUCd547Wvd/u8vUg/2g0uSWYU5Ae+w=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vertx/3.5.0/vertx-eventbus.min.js" integrity="sha256-H9mL1dL4hQ1k2VY+p2HBnAW3sixds200pZrn3Km1WTM=" crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script>
+      var eventBus = new EventBus('http://localhost:8080/eventbus');
+      eventBus.onopen = function () {
+        eventBus.registerHandler('stats', function (error, message) {
+          var body = JSON.parse(message.body);
+          var mb = (Math.floor(body.bytes / 1024 / 1024));
+          document.getElementById("mb_total").textContent = mb.toString();
+          document.getElementById("images").textContent = body.images.toString();
+        });
+      }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Vert.x Scrapper Stats</h1>
+        <div class = "row">
+            <div class = "col-md-6">
+                <h2>MB total: <span id = "mb_total">0</span></h2>
+            </div>
+            <div class = "col-md-6">
+                <h2>Images: <span id = "images">0</span></h2>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
