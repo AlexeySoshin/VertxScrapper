@@ -29,6 +29,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile group: 'io.vertx', name: 'vertx-core', version: '3.5.0'
+    compile group: 'io.vertx', name: 'vertx-web', version: '3.5.0'
     compile 'io.vertx:vertx-web-client:3.5.0'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
 
