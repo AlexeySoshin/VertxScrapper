@@ -23,10 +23,10 @@ class ContentWriter(private val targetDirectory: String) : AbstractVerticle() {
                 val start = System.currentTimeMillis()
 
                 vertx.fileSystem().writeFile("$targetDirectory/${imageMessage.name}",
-                        imageMessage.imageBuffer, { res ->
+                        imageMessage.buffer, { res ->
                     if (res.succeeded()) {
                         println("Took ${System.currentTimeMillis() - start}ms to write image ${imageMessage.name}")
-                        vertx.eventBus().send(PRODUCES, true)
+                        vertx.eventBus().publish(PRODUCES, imageMessage.buffer.length())
                     } else {
                         println(res.cause())
                     }
