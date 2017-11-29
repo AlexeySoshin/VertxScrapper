@@ -1,6 +1,7 @@
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.ext.web.client.WebClient
+import java.util.concurrent.TimeoutException
 import kotlin.system.measureTimeMillis
 
 class HTMLFetcher : AbstractVerticle() {
@@ -19,9 +20,12 @@ class HTMLFetcher : AbstractVerticle() {
                 event.body().let { url ->
                     val start = System.currentTimeMillis()
                     fetchHTML(client, url).setHandler { res ->
-
-                        println("Took ${System.currentTimeMillis() - start}ms to fetch document")
-                        vertx.eventBus().send(PRODUCES, res.result())
+                        if (res.succeeded()) {
+                            println("Took ${System.currentTimeMillis() - start}ms to fetch document $url")
+                            vertx.eventBus().send(PRODUCES, res.result())
+                        } else {
+                            println("Couldn't fetch document $url")
+                        }
                     }
                 }
             })
@@ -32,7 +36,7 @@ class HTMLFetcher : AbstractVerticle() {
         future.complete()
     }
 
-    fun fetchHTML(client: WebClient, url: String): Future<String> {
+    fun fetchHTML(client: WebClient, url: String, retries: Int = 3): Future<String> {
 
         val result = Future.future<String>()
 
@@ -40,10 +44,19 @@ class HTMLFetcher : AbstractVerticle() {
             if (response.succeeded()) {
                 result.complete(response.result().bodyAsString())
             } else {
+                if (response.cause() is TimeoutException) {
+                    println("Retrying $url")
+                    vertx.eventBus().send(CONSUMES, url)
+                }
+
                 result.fail(response.cause())
             }
         }
 
         return result
+    }
+
+    override fun stop() {
+        this.vertx.eventBus().consumer<String>(CONSUMES).unregister()
     }
 }

@@ -38,4 +38,8 @@ class ContentWriter(private val targetDirectory: String) : AbstractVerticle() {
     private fun createDirectory(targetDirectory: String) {
         File(targetDirectory).mkdirs()
     }
+
+    override fun stop() {
+        this.vertx.eventBus().consumer<String>(CONSUMES).unregister()
+    }
 }

@@ -14,9 +14,12 @@ class HTMLParser : AbstractVerticle() {
      */
     override fun start() {
         val deliveryOptions = DeliveryOptions().setCodecName(DocumentCodec().name())
-        registerCodec()
         this.vertx.eventBus().consumer<String>(CONSUMES, { event ->
             event.body().let { body ->
+                if (body == null) {
+                    return@let
+                }
+                
                 val start = System.currentTimeMillis()
                 val document = Jsoup.parse(body)
                 println("Took ${System.currentTimeMillis() - start}ms to parse the document")
@@ -28,14 +31,6 @@ class HTMLParser : AbstractVerticle() {
 
     override fun stop() {
         this.vertx.eventBus().consumer<String>(CONSUMES).unregister()
-    }
-
-    private fun registerCodec() {
-        try {
-            this.vertx.eventBus().registerCodec(DocumentCodec())
-        } catch (e: IllegalStateException) {
-            println("WARN: $e")
-        }
     }
 }
 

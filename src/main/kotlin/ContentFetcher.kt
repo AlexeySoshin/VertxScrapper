@@ -5,6 +5,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.core.eventbus.DeliveryOptions
 import io.vertx.ext.web.client.WebClient
 import messages.ImageMessage
+import java.util.concurrent.TimeoutException
 import kotlin.system.measureTimeMillis
 
 class ContentFetcher : AbstractVerticle() {
@@ -20,18 +21,17 @@ class ContentFetcher : AbstractVerticle() {
             val client = WebClient.create(vertx)
             val deliveryOptions = DeliveryOptions().setCodecName(ImageCodec().name())
 
-            // You could chain those if you want to
-            registerCodec()
             this.vertx.eventBus().consumer<String>(CONSUMES, { event ->
-                // If null string was sent over, ignore it
                 event.body().let { url ->
                     val start = System.currentTimeMillis()
                     fetchImage(client, url).setHandler { res ->
-
                         val imageName = url.split("/").last()
-
-                        println("Took ${System.currentTimeMillis() - start}ms to fetch image $imageName")
-                        vertx.eventBus().send(PRODUCES, ImageMessage(imageName, res.result()), deliveryOptions)
+                        if (res.succeeded()) {
+                            println("Took ${System.currentTimeMillis() - start}ms to fetch image $imageName")
+                            vertx.eventBus().send(PRODUCES,
+                                    ImageMessage(imageName, res.result()), deliveryOptions)
+                        }
+                        // Ignore failures
                     }
                 }
             })
@@ -42,26 +42,32 @@ class ContentFetcher : AbstractVerticle() {
         future.complete()
     }
 
-    private fun registerCodec() {
-        try {
-            this.vertx.eventBus().registerCodec(ImageCodec())
-        } catch (e: IllegalStateException) {
-            println("WARN: $e")
-        }
-    }
+    private val DEFAULT_TIMEOUT: Long = 5000
 
+    /**
+     * This method is almost the same as HTMLFetcher.fetchHTML
+     * Not DRYied for clarity of presentation
+     */
     fun fetchImage(client: WebClient, url: String): Future<Buffer> {
 
         val result = Future.future<Buffer>()
 
-        client.getAbs(url).timeout(10000).send { response ->
+        client.getAbs(url).timeout(DEFAULT_TIMEOUT).send { response ->
             if (response.succeeded()) {
                 result.complete(response.result().bodyAsBuffer())
             } else {
+                if (response.cause() is TimeoutException) {
+                    println("Retrying $url")
+                    vertx.eventBus().send(CONSUMES, url)
+                }
                 result.fail(response.cause())
             }
         }
 
         return result
+    }
+
+    override fun stop() {
+        this.vertx.eventBus().consumer<String>(CONSUMES).unregister()
     }
 }

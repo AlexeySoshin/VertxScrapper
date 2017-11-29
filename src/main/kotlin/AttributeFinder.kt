@@ -1,4 +1,3 @@
-import codecs.DocumentCodec
 import io.vertx.core.AbstractVerticle
 import org.jsoup.nodes.Document
 
@@ -11,7 +10,6 @@ class AttributeFinder(private val selector: String,
     }
 
     override fun start() {
-        registerCodec()
         this.vertx.eventBus().consumer<Document>(CONSUMES, { event ->
             event.body().let { body ->
                 val start = System.currentTimeMillis()
@@ -27,11 +25,7 @@ class AttributeFinder(private val selector: String,
         })
     }
 
-    private fun registerCodec() {
-        try {
-            this.vertx.eventBus().registerCodec(DocumentCodec())
-        } catch (e: IllegalStateException) {
-            println("WARN: $e")
-        }
+    override fun stop() {
+        this.vertx.eventBus().consumer<String>(CONSUMES).unregister()
     }
 }
