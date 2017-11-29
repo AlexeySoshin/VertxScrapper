@@ -1,3 +1,4 @@
+import codecs.ImageCodec
 import io.vertx.core.DeploymentOptions
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
@@ -54,6 +55,7 @@ class ContentFetcherTest {
             latch.countDown()
         })
 
+        vertx.eventBus().registerCodec(ImageCodec())
         // Send new event
         vertx.eventBus().send(ContentFetcher.CONSUMES, "http://vertx.io/assets/logo-sm.png")
 

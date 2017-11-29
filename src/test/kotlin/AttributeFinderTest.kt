@@ -26,6 +26,7 @@ class AttributeFinderTest {
             latch.countDown()
         })
 
+        vertx.eventBus().registerCodec(DocumentCodec())
         vertx.eventBus().send(AttributeFinder.CONSUMES, Jsoup.parse(getHTML("1.html")), deliveryOptions)
 
         latch.await(1, TimeUnit.SECONDS)
@@ -50,6 +51,7 @@ class AttributeFinderTest {
             latch.countDown()
         })
 
+        vertx.eventBus().registerCodec(DocumentCodec())
         vertx.eventBus().send(AttributeFinder.CONSUMES, Jsoup.parse(getHTML("2.html")), deliveryOptions)
 
         latch.await(2, TimeUnit.SECONDS)

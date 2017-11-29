@@ -25,7 +25,7 @@ class HTMLParserTest {
 
         vertx.eventBus().send(HTMLParser.CONSUMES, getHTML("1.html"))
 
-        latch.await(10, TimeUnit.SECONDS)
+        latch.await(20, TimeUnit.SECONDS)
 
         assertEquals(1, resultHolder.size)
         assertEquals(resultHolder[0].title(), "Vert.x Web Client - Vert.x")

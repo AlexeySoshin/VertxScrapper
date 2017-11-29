@@ -54,7 +54,8 @@ class HTMLFetcherTest {
         })
 
         // Send new event
-        vertx.eventBus().send(HTMLFetcher.CONSUMES, "http://vertx.io/docs/vertx-web-client/java/")
+        vertx.eventBus().send(HTMLFetcher.CONSUMES,
+                "http://vertx.io/docs/vertx-web-client/java/")
 
         latch.await(10, TimeUnit.SECONDS)
 
