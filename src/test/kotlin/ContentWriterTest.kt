@@ -4,6 +4,7 @@ import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.eventbus.DeliveryOptions
 import messages.ImageMessage
+import org.testng.Assert.assertEquals
 import org.testng.Assert.assertTrue
 import org.testng.annotations.AfterMethod
 import org.testng.annotations.Test
@@ -22,7 +23,9 @@ class ContentWriterTest {
         vertx.deployVerticle(ContentWriter("./"),
                 DeploymentOptions().setWorker(true))
 
-        vertx.eventBus().consumer<Boolean>(ContentWriter.PRODUCES, { result ->
+        val resultHolder = mutableListOf<Int>()
+        vertx.eventBus().consumer<Int>(ContentWriter.PRODUCES, { result ->
+            resultHolder += result.body()
             latch.countDown()
         })
 
@@ -35,6 +38,8 @@ class ContentWriterTest {
 
         latch.await(5, TimeUnit.SECONDS)
 
+        assertEquals(resultHolder.size, 1)
+        assertEquals(resultHolder[0], 8832)
         assertTrue(File("./test.png").exists())
     }
 

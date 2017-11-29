@@ -63,6 +63,6 @@ class ContentFetcherTest {
 
         assertEquals(1, resultHolder.size)
         assertEquals(resultHolder[0].name, "logo-sm.png")
-        assertEquals(resultHolder[0].imageBuffer.length(), 8832)
+        assertEquals(resultHolder[0].buffer.length(), 8832)
     }
 }
