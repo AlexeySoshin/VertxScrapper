@@ -1,4 +1,4 @@
-language: kotlin
+language: java
 # As suggested by https://docs.travis-ci.com/user/languages/java/
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
