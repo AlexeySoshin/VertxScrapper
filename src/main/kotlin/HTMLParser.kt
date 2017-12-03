@@ -7,7 +7,7 @@ class HTMLParser : AbstractVerticle() {
     companion object {
         // Note that this is a coupling between verticles, although not very tight one
         // It helps avoiding naming mistakes though
-        val CONSUMES = HTMLParser.PRODUCES
+        val CONSUMES = HTMLFetcher.PRODUCES
         val PRODUCES = "findAttribute"
     }
 
