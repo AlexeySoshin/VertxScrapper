@@ -15,13 +15,17 @@ class HTMLParserTest {
 
         val resultHolder = mutableListOf<Document>()
 
-        val latch = CountDownLatch(1)
+        var latch = CountDownLatch(1)
 
         vertx.eventBus().registerCodec(DocumentCodec())
-        vertx.deployVerticle(HTMLParser(), DeploymentOptions().setWorker(true))
+        vertx.deployVerticle(HTMLParser(), DeploymentOptions().setWorker(true), { _ ->
+            latch.countDown()
+        })
+
+        latch.await()
+        latch = CountDownLatch(1)
 
         vertx.eventBus().consumer<Document>(HTMLParser.PRODUCES, { result ->
-            println(result.body().className())
             resultHolder += result.body()
             latch.countDown()
         })
