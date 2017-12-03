@@ -36,7 +36,7 @@ class ContentWriterTest {
         vertx.eventBus().registerCodec(ImageCodec())
         vertx.eventBus().send(ContentWriter.CONSUMES, ImageMessage("test.png", image), deliveryOptions)
 
-        latch.await(5, TimeUnit.SECONDS)
+        latch.await(20, TimeUnit.SECONDS)
 
         assertEquals(resultHolder.size, 1)
         assertEquals(resultHolder[0], 8832)
