@@ -4,6 +4,10 @@ import io.vertx.ext.web.client.WebClient
 import java.util.concurrent.TimeoutException
 import kotlin.system.measureTimeMillis
 
+/**
+ * This is the first verticle in the pipeline
+ * It's triggered by sending event it consumes over EventBus
+ */
 class HTMLFetcher : AbstractVerticle() {
 
     companion object {
@@ -36,7 +40,7 @@ class HTMLFetcher : AbstractVerticle() {
         future.complete()
     }
 
-    fun fetchHTML(client: WebClient, url: String, retries: Int = 3): Future<String> {
+    fun fetchHTML(client: WebClient, url: String): Future<String> {
 
         val result = Future.future<String>()
 

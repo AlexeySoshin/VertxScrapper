@@ -5,7 +5,9 @@ import org.jsoup.Jsoup
 
 class HTMLParser : AbstractVerticle() {
     companion object {
-        val CONSUMES = HTMLFetcher.PRODUCES
+        // Note that this is a coupling between verticles, although not very tight one
+        // It helps avoiding naming mistakes though
+        val CONSUMES = HTMLParser.PRODUCES
         val PRODUCES = "findAttribute"
     }
 
@@ -19,7 +21,7 @@ class HTMLParser : AbstractVerticle() {
                 if (body == null) {
                     return@let
                 }
-                
+
                 val start = System.currentTimeMillis()
                 val document = Jsoup.parse(body)
                 println("Took ${System.currentTimeMillis() - start}ms to parse the document")
