@@ -38,7 +38,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile group: 'io.vertx', name: 'vertx-core', version: $vertx_version
     compile group: 'io.vertx', name: 'vertx-web', version: $vertx_version
-    compile "io.vertx:vertx-web-client:$vertx_version"
+    compile group: 'io.vertx', name: 'vertx-web-client', version: $vertx_version
     compile group: 'io.vertx', name: 'vertx-lang-kotlin', version: $vertx_version
     compile group: 'io.vertx', name: 'vertx-lang-kotlin-coroutines', version: $vertx_version
     compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
