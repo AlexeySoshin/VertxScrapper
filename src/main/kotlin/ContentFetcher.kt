@@ -11,8 +11,8 @@ import kotlin.system.measureTimeMillis
 class ContentFetcher : AbstractVerticle() {
 
     companion object {
-        val CONSUMES = AttributeFinder.PRODUCES
-        val PRODUCES = "content.write"
+        const val CONSUMES = AttributeFinder.PRODUCES
+        const val PRODUCES = "content.write"
     }
 
     override fun start(future: Future<Void?>) {
@@ -22,17 +22,16 @@ class ContentFetcher : AbstractVerticle() {
             val deliveryOptions = DeliveryOptions().setCodecName(ImageCodec().name())
 
             this.vertx.eventBus().consumer<String>(CONSUMES, { event ->
-                event.body().let { url ->
-                    val start = System.currentTimeMillis()
-                    fetchImage(client, url).setHandler { res ->
-                        val imageName = url.split("/").last()
-                        if (res.succeeded()) {
-                            println("Took ${System.currentTimeMillis() - start}ms to fetch image $imageName")
-                            vertx.eventBus().send(PRODUCES,
-                                    ImageMessage(imageName, res.result()), deliveryOptions)
-                        }
-                        // Ignore failures
+                val url = event.body()
+                val start = System.currentTimeMillis()
+                fetchImage(client, url).setHandler { res ->
+                    val imageName = url.split("/").last()
+                    if (res.succeeded()) {
+                        println("Took ${System.currentTimeMillis() - start}ms to fetch image $imageName")
+                        vertx.eventBus().send(PRODUCES,
+                                ImageMessage(imageName, res.result()), deliveryOptions)
                     }
+                    // Ignore failures
                 }
             })
         }
@@ -42,7 +41,7 @@ class ContentFetcher : AbstractVerticle() {
         future.complete()
     }
 
-    private val DEFAULT_TIMEOUT: Long = 5000
+    private val defaultTimeout: Long = 5000
 
     /**
      * This method is almost the same as HTMLFetcher.fetchHTML
@@ -52,7 +51,7 @@ class ContentFetcher : AbstractVerticle() {
 
         val result = Future.future<Buffer>()
 
-        client.getAbs(url).timeout(DEFAULT_TIMEOUT).send { response ->
+        client.getAbs(url).timeout(defaultTimeout).send { response ->
             if (response.succeeded()) {
                 result.complete(response.result().bodyAsBuffer())
             } else {

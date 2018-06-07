@@ -5,8 +5,8 @@ import java.io.File
 class ContentWriter(private val targetDirectory: String) : AbstractVerticle() {
 
     companion object {
-        val CONSUMES = ContentFetcher.PRODUCES
-        val PRODUCES = "done"
+        const val CONSUMES = ContentFetcher.PRODUCES
+        const val PRODUCES = "done"
     }
 
     override fun start() {
@@ -14,12 +14,9 @@ class ContentWriter(private val targetDirectory: String) : AbstractVerticle() {
         createDirectory(targetDirectory)
 
         this.vertx.eventBus().consumer<ImageMessage>(CONSUMES, { event ->
-            event.body().let { imageMessage ->
+            val imageMessage = event.body()
 
-                if (imageMessage.name.isEmpty()) {
-                    return@let
-                }
-
+            if (!imageMessage.name.isEmpty()) {
                 val start = System.currentTimeMillis()
 
                 vertx.fileSystem().writeFile("$targetDirectory/${imageMessage.name}",

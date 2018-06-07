@@ -11,8 +11,8 @@ import kotlin.system.measureTimeMillis
 class HTMLFetcher : AbstractVerticle() {
 
     companion object {
-        val CONSUMES = "html.fetch"
-        val PRODUCES = "html.parse"
+        const val CONSUMES = "html.fetch"
+        const val PRODUCES = "html.parse"
     }
 
     override fun start(future: Future<Void?>) {
@@ -21,15 +21,14 @@ class HTMLFetcher : AbstractVerticle() {
 
             this.vertx.eventBus().consumer<String>(CONSUMES, { event ->
                 // If null string was sent over, ignore it
-                event.body().let { url ->
-                    val start = System.currentTimeMillis()
-                    fetchHTML(client, url).setHandler { res ->
-                        if (res.succeeded()) {
-                            println("Took ${System.currentTimeMillis() - start}ms to fetch document $url")
-                            vertx.eventBus().send(PRODUCES, res.result())
-                        } else {
-                            println("Couldn't fetch document $url")
-                        }
+                val url = event.body()
+                val start = System.currentTimeMillis()
+                fetchHTML(client, url).setHandler { res ->
+                    if (res.succeeded()) {
+                        println("Took ${System.currentTimeMillis() - start}ms to fetch document $url")
+                        vertx.eventBus().send(PRODUCES, res.result())
+                    } else {
+                        println("Couldn't fetch document $url")
                     }
                 }
             })
@@ -44,7 +43,7 @@ class HTMLFetcher : AbstractVerticle() {
 
         val result = Future.future<String>()
 
-        client.getAbs(url).timeout(10000).send { response ->
+        client.getAbs(url).timeout(10_000).send { response ->
             if (response.succeeded()) {
                 result.complete(response.result().bodyAsString())
             } else {

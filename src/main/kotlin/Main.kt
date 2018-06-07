@@ -54,37 +54,44 @@ private fun deployVerticles(vertx: Vertx) {
 
     val deploymentOptions = DeploymentOptions().setWorker(true)
 
-    vertx.deployVerticle(ContentWriter("../manga/"),
-            deploymentOptions)
-    vertx.deployVerticle("ContentFetcher",
-            deploymentOptions.setInstances(2))
-    vertx.deployVerticle(AttributeFinder("#vungdoc img", "src"),
-            deploymentOptions.setInstances(1))
-    vertx.deployVerticle("HTMLParser",
-            deploymentOptions.setInstances(2))
+    vertx.apply {
+        deployVerticle(ContentWriter("./manga/"),
+                deploymentOptions)
+        deployVerticle("ContentFetcher",
+                deploymentOptions.setInstances(2))
+        deployVerticle(AttributeFinder("#vungdoc img", "src"),
+                deploymentOptions.setInstances(1))
+        deployVerticle("HTMLParser",
+                deploymentOptions.setInstances(2))
 
-    // Wait until first verticle in the pipeline is deployed to start sending the data
-    vertx.deployVerticle("HTMLFetcher",
-            deploymentOptions.setInstances(4), { _ ->
+        // Wait until first verticle in the pipeline is deployed to start sending the data
+        deployVerticle("HTMLFetcher",
+                deploymentOptions.setInstances(4), { _ ->
 
-        println("Open UI by using this link: http://localhost:8080/")
-        // One Piece manga is notoriously long, 886 chapters
-        repeat(886, { i ->
-            vertx.eventBus().send(HTMLFetcher.CONSUMES,
-                    "http://manganeli.com/chapter/read_one_piece_manga_online_free4/chapter_${i + 1}")
+            println("Open UI by using this link: http://localhost:8080/")
+            // One Piece manga is notoriously long, 904 chapters
+            repeat(904, { i ->
+                vertx.eventBus().send(HTMLFetcher.CONSUMES,
+                        "http://manganeli.com/chapter/read_one_piece_manga_online_free4/chapter_${i + 1}")
+            })
         })
-    })
+    }
 }
 
-fun statsAsJson(writtenBytes: AtomicLong, writtenFiles: AtomicInteger): String {
-    return JsonObject(Stats(writtenBytes.toLong(), writtenFiles.toInt()).toMap()).toString()
+fun statsAsJson(writtenBytes: AtomicLong,
+                writtenFiles: AtomicInteger): String {
+    return JsonObject(Stats(writtenBytes.toLong(),
+            writtenFiles.toInt()).toMap()).toString()
 }
 
 /**
  * Create SockJS handler to be able to send data to clients over WebSockets
  */
 fun sockJsHandler(vertx: Vertx): Handler<RoutingContext>? {
-    return SockJSHandler.create(vertx).bridge(BridgeOptions().addOutboundPermitted(PermittedOptions().setAddressRegex("stats")))
+    return SockJSHandler.create(vertx).
+            bridge(BridgeOptions().
+                    addOutboundPermitted(PermittedOptions().
+                            setAddressRegex("stats")))
 }
 
 data class Stats(private val bytes: Long, private val images: Int) {
