@@ -7,6 +7,10 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+install:
+  - TERM=dumb ./gradlew assemble
+script:
+  - TERM=dumb ./gradlew check
 # CodeCov coverage integration
 after_success:
   - bash <(curl -s https://codecov.io/bash)
